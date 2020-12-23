@@ -1,0 +1,5 @@
+{
+    "accessToken": "my-twitch-access-token",
+    "refreshToken": "my-twitch-refresh-token",
+    "expiryTimestamp": 0
+}

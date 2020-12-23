@@ -1,0 +1,21 @@
+{
+  "name": "floleebot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "dev": "nodemon main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "google-spreadsheet": "^3.0.14",
+    "nodemon": "^2.0.6",
+    "twitch": "^4.3.6",
+    "twitch-chat-client": "^4.3.6"
+  }
+}
