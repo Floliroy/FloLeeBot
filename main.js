@@ -1,5 +1,18 @@
 require('dotenv').config()
 
+const basicConsole = console.log
+Date.prototype.format = function(){
+    return this.toLocaleDateString('fr-FR', { 'timeZone': 'Europe/Paris', 
+        'day': '2-digit', 'month': '2-digit', 'year': 'numeric', 
+        'hour': '2-digit', 'minute': '2-digit', 'second': '2-digit', 'hour12': false 
+    }).replace('à', '-')
+}
+console.log = function(){
+    const date = `[${new Date().format()}]`
+    Array.prototype.unshift.call(arguments, date)
+    basicConsole.apply(this, arguments)
+}
+
 const fs = require('fs')
 const {RefreshableAuthProvider, StaticAuthProvider} = require('twitch-auth')
 const {ChatClient} = require('twitch-chat-client')
@@ -41,7 +54,8 @@ async function start(){
 
         let response
         if(response = db.twitchCommandes.get(message)) {
-            chatClient.say(channel, response.message);
+            chatClient.say(channel, response.message)
+            console.log(`LOG : ${user} used ${message}`)
         }
     })
 }
