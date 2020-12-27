@@ -17,7 +17,6 @@ const fs = require('fs')
 const {RefreshableAuthProvider, StaticAuthProvider} = require('twitch-auth')
 const {ChatClient} = require('twitch-chat-client')
 
-//FloLeeroyJ ID = 65939894
 const Database = require('./modules/database.js')
 let db
 
@@ -62,3 +61,4 @@ async function start(){
 }
 
 start()
+//FloLeeroyJ ID = 65939894
