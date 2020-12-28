@@ -32,9 +32,17 @@ module.exports = class Database{
             })
         }
 
+        let adsMessages = new Array()
+        const sheetAdsMSG = doc.sheetsByTitle["AdsMSG"]
+        const rowsAdsMSG = await sheetAdsMSG.getRows()
+        for(let row of rowsAdsMSG){
+            adsMessages.push(row.Message)
+        }
+
         return {
             twitchCommandes: twitchCommandes, 
-            discordCommandes: discordCommandes
+            discordCommandes: discordCommandes,
+            adsMessages: adsMessages
         }
     }
 
