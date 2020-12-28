@@ -68,6 +68,16 @@ module.exports = class TwitchBot{
         }
     }
 
+    static onSub(channel, user){
+        chatClient.say(channel, `Merci @${user} pour ton sub et ton soutien !`);
+    }
+    static onResub(channel, user, subInfo){
+        chatClient.say(channel, `Merci @${user} pour ton ${subInfo.months}ème mois d'abonnement !`);
+    }
+    static onSubGift(channel, user, subInfo){
+        chatClient.say(channel, `Merci ${subInfo.gifter} d'avoir offert un sub à ${user} !`);
+    }
+
     static async randomAds(db){
         if(await isStreamLive()){
             db.adsMessages.shuffle()

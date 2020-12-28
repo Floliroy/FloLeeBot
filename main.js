@@ -43,6 +43,15 @@ bot.on('ready', async function(){
     chatClient.onMessage(function(channel, user, message){
         TwitchBot.onMessage(channel, user, message, db)
     })
+    chatClient.onSub(function(channel, user){
+        TwitchBot.onSub(channel, user)
+    })
+    chatClient.onResub(function(channel, user, subInfo){
+        TwitchBot.onResub(channel, user, subInfo)
+    })
+    chatClient.onSubGift(function(channel, user, subInfo){
+        TwitchBot.onSubGift(channel, user, subInfo)
+    })
 })
 
 bot.on('message', async function(message){
