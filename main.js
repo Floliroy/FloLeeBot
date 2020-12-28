@@ -57,6 +57,10 @@ bot.on('ready', async function(){
 bot.on('message', async function(message){
     if(!message.content.startsWith("!")) return
 
+    if(message.content == "!refresh-db"){
+        return db = await Database.refreshDatas()
+    }
+
     let response = db.discordCommandes.get(message.content)
     if(response){
         if(response.embed){
@@ -68,9 +72,9 @@ bot.on('message', async function(message){
             }else{
                 embed.setImage(response.image)
             }
-            message.channel.send(embed)
+            return message.channel.send(embed)
         }else{
-            message.channel.send(response.message)
+            return message.channel.send(response.message)
         }
     }
 })
