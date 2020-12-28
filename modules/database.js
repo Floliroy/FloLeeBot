@@ -27,8 +27,8 @@ module.exports = class Database{
                 message: row.Message,
                 titre: row.Titre,
                 image: row.Image,
-                miniature: row.Miniature == true,
-                embed: row.Embed == true
+                miniature: row.Miniature == "TRUE",
+                embed: row.Embed == "TRUE"
             })
         }
 
