@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "google-spreadsheet": "^3.0.14",
     "nodemon": "^2.0.6",

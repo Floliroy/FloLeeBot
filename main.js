@@ -26,22 +26,42 @@ setInterval(async function(){
 }, 1000 * 60 * 60)
 
 const TwitchBot = require('./modules/twitchBot.js')
+setInterval(function(){
+    TwitchBot.randomAds(db)
+}, 1000 * 60 * 15)
 
-/**
- * Async init function
- */
-async function init(){
+const Discord = require('discord.js')
+const bot = new Discord.Client()
+bot.login(process.env.DISCORD_TOKEN)
+
+bot.on('ready', async function(){
+    console.log(`LOG: Logged in as ${bot.user.tag}`)
+    
     db = await Database.refreshDatas()
     const chatClient = await TwitchBot.auth()
 
     chatClient.onMessage(function(channel, user, message){
         TwitchBot.onMessage(channel, user, message, db)
     })
+})
 
-    setInterval(function(){
-        TwitchBot.randomAds(db)
-    }, 1000 * 60 * 15)
+bot.on('message', async function(message){
+    if(!message.content.startsWith("!")) return
 
-    console.log("LOG: Ready to Go !")
-}
-init()
+    let response = db.discordCommandes.get(message.content)
+    if(response){
+        if(response.embed){
+            let embed = new Discord.MessageEmbed()
+                .setTitle(response.titre)
+                .setDescription(response.message)
+            if(response.miniature){
+                embed.setThumbnail(response.image)
+            }else{
+                embed.setImage(response.image)
+            }
+            message.channel.send(embed)
+        }else{
+            message.channel.send(response.message)
+        }
+    }
+})
