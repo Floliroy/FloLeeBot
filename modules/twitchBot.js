@@ -3,11 +3,52 @@ const {ApiClient} = require('twitch')
 const {RefreshableAuthProvider, StaticAuthProvider, ClientCredentialsAuthProvider} = require('twitch-auth')
 const {ChatClient} = require('twitch-chat-client')
 
+const {Tft} = require('riotgames-gg')
+const tft = new Tft({region: "EUW", apikey: process.env.RIOT_TOKEN})
+
 const STREAM_NAME = "FloLeeroyJ"
 const CHANNEL_NAME = "#floleeroyj"
 
 let chatClient
 let apiClient
+
+const tierShortcuts = new Map()
+tierShortcuts.set("CHALLENGER", "Chall")
+tierShortcuts.set("GRANDMASTER","GM")
+tierShortcuts.set("MASTER",     "Master")
+tierShortcuts.set("DIAMOND",    "D")
+tierShortcuts.set("PLATINUM",   "P")
+tierShortcuts.set("GOLD",       "G")
+tierShortcuts.set("SILVER",     "S")
+tierShortcuts.set("BRONZE",     "B")
+tierShortcuts.set("IRON",       "F")
+const rankShortcuts = new Map()
+rankShortcuts.set("I",  "1")
+rankShortcuts.set("II", "2")
+rankShortcuts.set("III","3")
+rankShortcuts.set("IV", "4")
+const summonersId = new Map()
+summonersId.set("Floliroy", "D8Aak1OMXfDAwHi6E11szgcpenyjjliTE6w_pz5hm_UsiBA")
+summonersId.set("Usefull RøIe", "kwuQLVqCwkaFKTZhm0v8ni9iO2Wopo0nU4fJ2i8TN-RNKOg-QxC-FR0k")
+summonersId.set("Florian166", "93EWCwM35QIyx2w2Z3UuuS8Ek-bqGi33-HEx46bLsAcxALU")
+summonersId.set("Floliroy TFT", "uwgi2LHIdHNd2T0tUMeAwm144VoJLl7aiRfKmM35DdPr1aVP0VToOSIN")
+
+/**
+ * This function get TFT information about a summoner
+ */
+async function getTftSummonerByName(name) {
+    try{
+        const response = await tft.League.entriesByAccId(summonersId.get(name))
+        const summoner = response[0]
+        
+        const div = summoner.tier == "CHALLENGER" || summoner.tier == "GRANDMASTER" || 
+                    summoner.tier == "MASTER" ? "" : rankShortcuts.get(summoner.rank)
+        const rank = `${tierShortcuts.get(summoner.tier)}${div} ${summoner.leaguePoints}LP`
+        return {name: name, rank: rank}
+    }catch(err){
+        return null
+    }
+}
 
 /**
  * This function will check if stream is online
@@ -58,14 +99,35 @@ module.exports = class TwitchBot{
         return chatClient
     }
 
-    static onMessage(channel, user, message, db){
+    static async onMessage(channel, user, message, db){
         if(!message.startsWith("!")) return
 
-        let response = db.twitchCommandes.get(message)
-        if(response){
-            chatClient.say(channel, response.message)
-            console.log(`LOG: ${user} used ${message}`)
+        if(message == "!elo"){
+            const summoner = await getTftSummonerByName("Floliroy")
+            if(summoner){
+                chatClient.say(channel, `Je suis actuellement ${summoner.rank}`)
+            }
+        }else if(message == "!elo all"){
+            const summonersName = new Array("Floliroy", "Usefull RøIe", "Florian166", "Floliroy TFT")
+            let response = ""
+            for await(let summonerName of summonersName){
+                const summoner = await getTftSummonerByName(summonerName)
+                if(summoner){
+                    response += `${summoner.name} - ${summoner.rank} || `
+                }
+            }
+            if(response != ""){
+                response = response.slice(0, -3)
+                chatClient.say(channel, response)
+            }
+        }else{
+            let response = db.twitchCommandes.get(message)
+            if(response){
+                chatClient.say(channel, response.message)
+            }
         }
+
+        console.log(`LOG: ${user} used ${message}`)
     }
 
     static onSub(channel, user){
