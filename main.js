@@ -57,24 +57,24 @@ bot.on('ready', async function(){
 bot.on('message', async function(message){
     if(!message.content.startsWith("!")) return
 
-    if(message.content == "!refresh-db"){
-        return db = await Database.refreshDatas()
-    }
-
-    let response = db.discordCommandes.get(message.content)
-    if(response){
-        if(response.embed){
-            let embed = new Discord.MessageEmbed()
-                .setTitle(response.titre)
-                .setDescription(response.message)
-            if(response.miniature){
-                embed.setThumbnail(response.image)
+    if(message.content == "!update"){
+        db = await Database.refreshDatas()
+    }else{
+        let response = db.discordCommandes.get(message.content)
+        if(response){
+            if(response.embed){
+                let embed = new Discord.MessageEmbed()
+                    .setTitle(response.titre)
+                    .setDescription(response.message)
+                if(response.miniature){
+                    embed.setThumbnail(response.image)
+                }else{
+                    embed.setImage(response.image)
+                }
+                message.channel.send(embed)
             }else{
-                embed.setImage(response.image)
+                message.channel.send(response.message)
             }
-            return message.channel.send(embed)
-        }else{
-            return message.channel.send(response.message)
         }
     }
 })
