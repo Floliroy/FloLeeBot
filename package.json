@@ -14,10 +14,11 @@
   "dependencies": {
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "google-spreadsheet": "^3.0.14",
+    "google-spreadsheet": "^3.1.15",
+    "moment": "^2.29.1",
     "nodemon": "^2.0.6",
     "riotgames-gg": "0.0.7",
-    "twitch": "^4.3.6",
-    "twitch-chat-client": "^4.3.6"
+    "twitch": "^4.3.8",
+    "twitch-chat-client": "^4.3.8"
   }
 }
