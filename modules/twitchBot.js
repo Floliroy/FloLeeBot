@@ -27,6 +27,7 @@ rankShortcuts.set("I",  "1")
 rankShortcuts.set("II", "2")
 rankShortcuts.set("III","3")
 rankShortcuts.set("IV", "4")
+
 const summonersId = new Map()
 summonersId.set("Floliroy", "D8Aak1OMXfDAwHi6E11szgcpenyjjliTE6w_pz5hm_UsiBA")
 summonersId.set("Usefull RøIe", "kwuQLVqCwkaFKTZhm0v8ni9iO2Wopo0nU4fJ2i8TN-RNKOg-QxC-FR0k")
